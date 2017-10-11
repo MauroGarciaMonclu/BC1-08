@@ -35,7 +35,7 @@ public class Principal {
 					fich.hasNextLine();
 				}
 				fich.close();
-				System.out.println("Terreno creado a partir de "+nombre+".txt:");
+				System.out.println("Terreno creado a partir de " + nombre + ".txt:");
 				Mostrar_Terreno(terreno);
 				System.out.println();
 				System.out.println("Sucesores:");
@@ -64,6 +64,7 @@ public class Principal {
 				nombre = "Terreno";
 			}
 			Escribir_Terreno(terreno, C, F, K, MAX, Xt, Yt, nombre);
+			Generar_Sucesores(terreno, Xt, Yt, K, MAX);
 			break;
 		default:
 		}
@@ -190,31 +191,62 @@ public class Principal {
 			 * System.out.println(combinacionesResultado.toString());
 			 */
 		}
-		ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>> resultado = new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>();
-		ArrayList<ArrayList<ArrayList<Integer>>> elemento = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		ArrayList<ArrayList<Integer>> elemento21 = new ArrayList<ArrayList<Integer>>();
-		ArrayList<ArrayList<Integer>> elemento2 = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> elemento3 = new ArrayList<Integer>();
+		ArrayList<ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>> resultado = new ArrayList<ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>>();
+		ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>> elemento = new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>();
+		ArrayList<ArrayList<ArrayList<Integer>>> elemento21 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		ArrayList<ArrayList<ArrayList<Integer>>> elemento2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		ArrayList<ArrayList<Integer>> elemento3 = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> elemento31 = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> elemento4 = new ArrayList<Integer>();
 		for (int i = 0; i < sucesores.size(); i++) {
 			for (int j = 0; j < combinacionesK.size(); j++) {
-				elemento = new ArrayList<ArrayList<ArrayList<Integer>>>();
-				elemento21 = new ArrayList<ArrayList<Integer>>();
-				elemento2 = new ArrayList<ArrayList<Integer>>();
-				elemento21.add(sucesores.get(i));
+				elemento = new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>();
+				elemento21 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+				elemento31 = new ArrayList<ArrayList<Integer>>();
+				elemento2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+				elemento31.add(sucesores.get(i));
+				elemento21.add(elemento31);
 				elemento.add(elemento21);
 				for (int k = 0; k < sucesoresPosi.size(); k++) {
-					elemento3 = new ArrayList<Integer>();
-					elemento3.add(combinacionesK.get(j).get(k));
+					elemento3 = new ArrayList<ArrayList<Integer>>();
+					elemento4 = new ArrayList<Integer>();
+					elemento4.add(combinacionesK.get(j).get(k));
+					elemento3.add(elemento4);
+					elemento3.add(sucesoresPosi.get(k));
 					elemento2.add(elemento3);
-					elemento2.add(sucesoresPosi.get(k));
 				}
 				elemento.add(elemento2);
 				resultado.add(elemento);
 			}
 		}
+		int[][] terreno2 = new int[terreno.length][terreno[0].length];
 		System.out.println("| Movi. | | Transporte de tierra");
 		for (int i = 0; i < resultado.size(); i++) {
 			System.out.println(resultado.get(i).toString());
+		}
+		System.out.println();
+		leer.cadena("Pulsa Enter para el nuevo terreno y la nueva posicion");
+		System.out.println();
+		for (int i = 0; i < resultado.size(); i++) {
+			for (int j = 0; j < terreno2.length; j++) {
+				for (int k = 0; k < terreno2[j].length; k++) {
+					terreno2[j][k] = terreno[j][k];
+				}
+			}
+			System.out.println("-----------------------------------");
+			System.out.println(resultado.get(i).toString());
+			for (int j = 0; j < resultado.get(i).get(1).size(); j++) {
+				terreno2[Xt][Yt] = terreno2[Xt][Yt] - resultado.get(i).get(1).get(j).get(0).get(0);
+				terreno2[resultado.get(i).get(1).get(j).get(1).get(0)][resultado.get(i).get(1).get(j).get(1)
+						.get(1)] = resultado.get(i).get(1).get(j).get(0).get(0)
+								+ terreno2[resultado.get(i).get(1).get(j).get(1).get(0)][resultado.get(i).get(1).get(j)
+										.get(1).get(1)];
+			}
+			System.out.println("El nuevo terreno\t\t-:-");
+			Mostrar_Terreno(terreno2);
+			System.out.println("La nueva posicion del tractor\t-:-\n\t\t" + resultado.get(i).get(0).get(0).toString());
+			System.out.println("-----------------------------------");
+			System.out.println();
 		}
 	}
 
