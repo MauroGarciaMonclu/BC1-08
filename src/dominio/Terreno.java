@@ -14,7 +14,7 @@ public class Terreno {
 	int Yt;
 	int K;
 	int MAX;
-	int[][] terreno;
+	int [][] terreno;
 
 	public Terreno(String nombre) {
 		Leer_Terreno(nombre);

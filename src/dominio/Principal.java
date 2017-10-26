@@ -21,7 +21,7 @@ public class Principal {
 			System.out.println();
 			System.out.println("Sucesores:");
 			System.out.println();
-			// Generar_Sucesores(ter.terreno, ter.Xt, ter.Yt, ter.K, ter.MAX);
+			Generar_Sucesores(terF.terreno, terF.Xt, terF.Yt, terF.K, terF.MAX);
 			break;
 		case 'r':
 			int K, C, F, MAX, Xt, Yt;
@@ -42,7 +42,7 @@ public class Principal {
 			Terreno terR = new Terreno(Xt, Yt, K, MAX, C, F, nombre);
 			System.out.println("Terreno generado:");
 			terR.Mostrar_Terreno();
-			// Generar_Sucesores(terreno, Xt, Yt, K, MAX);
+			Generar_Sucesores(terR.terreno, terR.Xt, terR.Yt, terR.K, terR.MAX);
 			break;
 		default:
 		}
