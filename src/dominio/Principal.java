@@ -21,7 +21,7 @@ public class Principal {
 			System.out.println();
 			System.out.println("Sucesores:");
 			System.out.println();
-			// Generar_Sucesores(ter.terreno, ter.Xt, ter.Yt, ter.K, ter.MAX);
+			Generar_Sucesores(terF);
 			break;
 		case 'r':
 			int K, C, F, MAX, Xt, Yt;
@@ -42,14 +42,19 @@ public class Principal {
 			Terreno terR = new Terreno(Xt, Yt, K, MAX, C, F, nombre);
 			System.out.println("Terreno generado:");
 			terR.Mostrar_Terreno();
-			// Generar_Sucesores(terreno, Xt, Yt, K, MAX);
+			//Generar_Sucesores(terreno, Xt, Yt, K, MAX);
 			break;
 		default:
 		}
 
 	}
 
-	public static void Generar_Sucesores(int[][] terreno, int Xt, int Yt, int K, int MAX) {
+	public static void Generar_Sucesores(Terreno ter) {
+		int[][] terreno=ter.getTerreno();
+		int Xt=ter.getXt();
+		int Yt=ter.getYt();
+		int K=ter.getK();
+		int MAX=ter.getMAX();
 		ArrayList<ArrayList<Integer>> sucesores = new ArrayList<ArrayList<Integer>>();
 		ArrayList[] cooSuc = new ArrayList[4];
 		ArrayList<Integer> coor = new ArrayList<Integer>();
@@ -159,8 +164,9 @@ public class Principal {
 									+ terreno2[resultado.get(i).get(1).get(j).get(1).get(0)][resultado.get(i).get(1)
 											.get(j).get(1).get(1)];
 				}
+				ter.setTerreno(terreno2);
 				System.out.println("Nuevo terreno\t\t-:-");
-				//Mostrar_Terreno(terreno2);
+				ter.Mostrar_Terreno();
 			}
 			System.out.println("Nueva posicion del tractor\t-:-\n\t\t" + resultado.get(i).get(0).get(0).toString());
 			System.out.println("-----------------------------------");

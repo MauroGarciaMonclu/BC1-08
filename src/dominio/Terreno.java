@@ -29,6 +29,29 @@ public class Terreno {
 		Escribir_Terreno(nombre);
 	}
 
+	public int getXt() {
+		return Xt;
+	}
+
+	public int getYt() {
+		return Yt;
+	}
+
+	public int getK() {
+		return K;
+	}
+
+	public int getMAX() {
+		return MAX;
+	}
+
+	public int[][] getTerreno() {
+		return terreno;
+	}
+	public void setTerreno(int [][]terreno){
+		this.terreno=terreno;
+	}
+
 	private void Leer_Terreno(String nombre) {
 		int C, F;
 		try {
