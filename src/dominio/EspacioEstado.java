@@ -51,7 +51,7 @@ public class EspacioEstado {
 				}
 				total = 0;
 			}
-			/*
+			/* Idea de Mauro
 			 * for (int i = 0; i < combinacionesK.size(); i++) { for (int j = 0;
 			 * j < sucesoresPosi.size(); j++) { coorPosi = sucesoresPosi.get(j);
 			 * if (terreno[coor.get(0)][coor.get(1)] +
