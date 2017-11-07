@@ -5,19 +5,16 @@ import java.util.ArrayList;
 public class EspacioEstado {
 	public ArrayList<ArrayList<Integer>> combinaciones = new ArrayList<ArrayList<Integer>>();
 
-	public void Generar_Sucesores(Terreno ter) {
-		int[][] terreno = ter.getTerreno();
-		int Xt = ter.getXt();
-		int Yt = ter.getYt();
-		int K = ter.getK();
-		int MAX = ter.getMAX();
+	public Sucesor[] Generar_Sucesores(Estado es) {
+		int[][] terreno = es.getTerrenoM();
+		int Xt = es.getTractor()[0];
+		int Yt = es.getTractor()[1];
+		int K = es.getK();
 		ArrayList<ArrayList<Integer>> sucesores = new ArrayList<ArrayList<Integer>>();
 		ArrayList[] cooSuc = new ArrayList[4];
 		ArrayList<Integer> coor = new ArrayList<Integer>();
 		ArrayList<ArrayList<Integer>> sucesoresPosi = new ArrayList<ArrayList<Integer>>();
 		ArrayList<ArrayList<Integer>> combinacionesK = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> coorPosi = new ArrayList<Integer>();
-		ArrayList<ArrayList<Integer>> combinacionesResultado = new ArrayList<ArrayList<Integer>>();
 		int sobrante;
 		int n = 0;
 		int total = 0;
@@ -51,14 +48,6 @@ public class EspacioEstado {
 				}
 				total = 0;
 			}
-			/*
-			 * for (int i = 0; i < combinacionesK.size(); i++) { for (int j = 0;
-			 * j < sucesoresPosi.size(); j++) { coorPosi = sucesoresPosi.get(j);
-			 * if (terreno[coor.get(0)][coor.get(1)] +
-			 * combinacionesK.get(i).get(j) <= K) {
-			 * combinacionesResultado.add(combinacionesK.get(i)); } } }
-			 * System.out.println(combinacionesResultado.toString());
-			 */
 		}
 		ArrayList<ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>> resultado = new ArrayList<ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>>();
 		ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>> elemento = new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>();
@@ -96,6 +85,10 @@ public class EspacioEstado {
 				resultado.add(elemento);
 			}
 		}
+		Sucesor[] suc = new Sucesor[resultado.size()];
+		for (int i = 0; i < resultado.size(); i++) {
+			suc[i] = new Sucesor(resultado.get(i));
+		}
 		int[][] terreno2 = new int[terreno.length][terreno[0].length];
 		System.out.println("| Movi. | | Transporte de tierra");
 		for (int i = 0; i < resultado.size(); i++) {
@@ -120,14 +113,15 @@ public class EspacioEstado {
 									+ terreno2[resultado.get(i).get(1).get(j).get(1).get(0)][resultado.get(i).get(1)
 											.get(j).get(1).get(1)];
 				}
-				ter.setTerreno(terreno2);
+				es.getTerreno().setTerreno(terreno2);
 				System.out.println("Nuevo terreno\t\t-:-");
-				ter.Mostrar_Terreno();
+				es.getTerreno().Mostrar_Terreno();
 			}
 			System.out.println("Nueva posicion del tractor\t-:-\n\t\t" + resultado.get(i).get(0).get(0).toString());
 			System.out.println("-----------------------------------");
 			System.out.println();
 		}
+		return suc;
 	}
 
 	public void Combinar(int sobrante, int i, int[] posiciones) {

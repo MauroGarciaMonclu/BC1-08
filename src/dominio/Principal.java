@@ -3,7 +3,6 @@ package dominio;
 import java.io.*;
 
 public class Principal {
-
 	public static void main(String[] args) throws IOException, Exception {
 		char forma = Character.toLowerCase(leer.caracter("Cálculo del campo:\n F - Leer fichero\n R - Aleatorio"));
 		switch (forma) {
@@ -19,8 +18,9 @@ public class Principal {
 			System.out.println();
 			System.out.println("Sucesores:");
 			System.out.println();
+			Estado esF=new Estado(terF);
 			EspacioEstado ee = new EspacioEstado();
-			ee.Generar_Sucesores(terF);
+			ee.Generar_Sucesores(esF);
 			break;
 		case 'r':
 			int K, C, F, MAX, Xt, Yt;
@@ -41,8 +41,9 @@ public class Principal {
 			Terreno terR = new Terreno(Xt, Yt, K, MAX, C, F, nombre);
 			System.out.println("Terreno generado:");
 			terR.Mostrar_Terreno();
+			Estado esR=new Estado(terR);
 			EspacioEstado ee2 = new EspacioEstado();
-			ee2.Generar_Sucesores(terR);
+			ee2.Generar_Sucesores(esR);
 			break;
 		default:
 		}
