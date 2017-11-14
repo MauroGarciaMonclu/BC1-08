@@ -1,30 +1,34 @@
 package dominio;
 
-import java.util.PriorityQueue;
+import java.util.*;
 
-public class Frontera {
-	private PriorityQueue<Nodo> frontera;
+public class Frontera implements Comparable<Nodo> {
+	private Queue<Nodo> frontera;
 
 	public Frontera() {
 	}
 
-	public PriorityQueue<Nodo> getFrontera() {
+	public Queue<Nodo> getFrontera() {
 		return frontera;
 	}
 
-	public void setFrontera(PriorityQueue<Nodo> frontera) {
+	public void setFrontera(Queue<Nodo> frontera) {
 		this.frontera = frontera;
 	}
 
 	public void crearFrontera() {
-		setFrontera(new PriorityQueue<Nodo>(new CompararNodos()));
+		Queue<Nodo> vacia = new LinkedList<Nodo>();
+		setFrontera(vacia);
 	}
-
-	public void Insertar(Nodo nodo) {
+	@Override
+	public int compareTo(Nodo n) {
+		return Integer.compare(frontera.peek().getValor(), n.getValor());
+	}
+	public void insertar(Nodo nodo) {
 		frontera.add(nodo);
 	}
 
-	public Nodo Elimina() {
+	public Nodo eliminar() {
 		return frontera.poll();
 	}
 

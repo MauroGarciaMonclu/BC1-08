@@ -1,13 +1,7 @@
 package dominio;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Random;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Terreno {
 	int Xt;
@@ -33,8 +27,16 @@ public class Terreno {
 		return Xt;
 	}
 
+	public void setXt(int Xt) {
+		this.Xt = Xt;
+	}
+
 	public int getYt() {
 		return Yt;
+	}
+
+	public void setYt(int Yt) {
+		this.Yt = Yt;
 	}
 
 	public int getK() {
@@ -48,32 +50,9 @@ public class Terreno {
 	public int[][] getTerreno() {
 		return terreno;
 	}
-	public void setTerreno(int [][]terreno){
-		this.terreno=terreno;
-	}
 
-	private void Leer_Terreno(String nombre) {
-		int C, F;
-		try {
-			Scanner fich = new Scanner(new FileReader(nombre + ".txt"));
-			Xt = fich.nextInt();
-			Yt = fich.nextInt();
-			K = fich.nextInt();
-			MAX = fich.nextInt();
-			C = fich.nextInt();
-			F = fich.nextInt();
-			terreno = new int[C][F];
-			fich.hasNextLine();
-			for (int i = 0; i < F; i++) {
-				for (int j = 0; j < C; j++) {
-					terreno[i][j] = fich.nextInt();
-				}
-				fich.hasNextLine();
-			}
-			fich.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void setTerreno(int[][] terreno) {
+		this.terreno = terreno;
 	}
 
 	public void Mostrar_Terreno() {
@@ -100,6 +79,30 @@ public class Terreno {
 			}
 		}
 		return terreno;
+	}
+
+	private void Leer_Terreno(String nombre) {
+		int C, F;
+		try {
+			Scanner fich = new Scanner(new FileReader(nombre + ".txt"));
+			Xt = fich.nextInt();
+			Yt = fich.nextInt();
+			K = fich.nextInt();
+			MAX = fich.nextInt();
+			C = fich.nextInt();
+			F = fich.nextInt();
+			terreno = new int[C][F];
+			fich.hasNextLine();
+			for (int i = 0; i < F; i++) {
+				for (int j = 0; j < C; j++) {
+					terreno[i][j] = fich.nextInt();
+				}
+				fich.hasNextLine();
+			}
+			fich.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void Escribir_Terreno(String nombre) throws IOException {
