@@ -7,7 +7,6 @@ public class Nodo {
 	private int[][] distribucion;
 	private int valor;
 	private int costo;
-
 	public Nodo(Estado estadoActual) {
 		nodoPadre = null;
 		this.estadoActual = estadoActual;
@@ -51,7 +50,6 @@ public class Nodo {
 	public void setEstadoActual(Estado estadoActual) {
 		this.estadoActual = estadoActual;
 	}
-
 	public int getValor() {
 		return valor;
 	}
@@ -59,7 +57,6 @@ public class Nodo {
 	public void setValor(int valor) {
 		this.valor = valor;
 	}
-
 	public int[] getDesplazamiento() {
 		return desplazamiento;
 	}

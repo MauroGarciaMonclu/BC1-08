@@ -135,7 +135,6 @@ public class EspacioEstado {
 		}*/
 		return sucesores;
 	}
-
 	private void Combinar(int sobrante, int i, int[] posiciones) {
 		if (i != posiciones.length) {
 			for (int j = 0; j <= sobrante; j++) {

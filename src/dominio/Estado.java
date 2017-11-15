@@ -1,9 +1,12 @@
 package dominio;
 
 public class Estado {
+	private int[] tractor = new int[2];
 	private Terreno terreno;
 
 	public Estado(Terreno terreno) {
+		tractor[0] = terreno.getXt();
+		tractor[1] = terreno.getYt();
 		this.terreno = terreno;
 	}
 
