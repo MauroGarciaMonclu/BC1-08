@@ -23,7 +23,7 @@ public class Principal {
 				System.out.println();
 				Estado esF = new Estado(terF);
 				Problema pF = new Problema(esF);
-				pF.busquedaAcotada("Anchura", 1000000);
+				pF.busqueda(100000, 1);
 				break;
 			case 'r':
 				int K, C, F, MAX, Xt, Yt;

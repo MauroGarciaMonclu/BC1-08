@@ -20,10 +20,12 @@ public class Frontera implements Comparable<Nodo> {
 		Queue<Nodo> vacia = new LinkedList<Nodo>();
 		setFrontera(vacia);
 	}
+
 	@Override
 	public int compareTo(Nodo n) {
 		return Integer.compare(frontera.peek().getValor(), n.getValor());
 	}
+
 	public void insertar(Nodo nodo) {
 		frontera.add(nodo);
 	}

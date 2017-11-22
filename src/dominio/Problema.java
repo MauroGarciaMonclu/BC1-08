@@ -1,15 +1,19 @@
 package dominio;
+
 import java.io.*;
 import java.util.*;
+
 public class Problema {
 	private Estado es;
 	private EspacioEstado ee;
 	private Nodo nodoSolucion;
+
 	public Problema(Estado es) {
 		this.es = es;
 		ee = new EspacioEstado(es);
 		nodoSolucion = null;
 	}
+
 	public String busqueda(int prof_Max, int inc_Prof) {
 		String solucion = "";
 		int profundidadActual = inc_Prof;
@@ -20,6 +24,7 @@ public class Problema {
 		}
 		return solucion;
 	}
+
 	public String busquedaAcotada(String estrategia, int prof_Max) {
 		String solucion = "";
 		boolean esSolucion = false;
@@ -34,13 +39,17 @@ public class Problema {
 				esSolucion = true;
 			} else {
 				if (continuar) {
-					Sucesor[] sucesores = ee.Generar_Sucesores(nActual.getEstadoActual());
+					EspacioEstado eeAux = new EspacioEstado(nActual.getEstadoActual());
+					Sucesor[] sucesores = eeAux.Generar_Sucesores(nActual.getEstadoActual());
 					Nodo[] listaNodos = crearListaNodos(sucesores, nActual, estrategia, prof_Max);
+					for (int i = 0; i < sucesores.length; i++) {
+						System.out.println(sucesores[i].getAccion()+" "+sucesores[i].getEstado().getTerreno()[0][1]);
+					}
 					for (int i = 0; i < listaNodos.length; i++) {
 						frontera.insertar(listaNodos[i]);
 					}
-					if(nActual.getDesplazamiento()!=null)
-					System.out.println(nActual.getAccionString());
+					if (nActual.getDesplazamiento() != null)
+						System.out.println(nActual.getAccionString());
 				} else {
 					continuar = true;
 				}
@@ -67,6 +76,7 @@ public class Problema {
 		}
 		return solucion;
 	}
+
 	public Nodo[] crearListaNodos(Sucesor[] sucesores, Nodo nodoActual, String estrategia, int profundidad) {
 		Nodo[] listaNodos = new Nodo[sucesores.length];
 		switch (estrategia) {
@@ -105,6 +115,7 @@ public class Problema {
 		}
 		return listaNodos;
 	}
+
 	public String crearSolucion(Nodo nodoSolucion) {
 		String acciones = "";
 		if (nodoSolucion.getNodoPadre() == null) {
@@ -114,20 +125,23 @@ public class Problema {
 		}
 		return acciones;
 	}
+
 	public boolean esObjetivo(Estado es) {
 		boolean verificar = true;
-		for (int i = 0; i < es.getTerreno().getTerreno().length; i++) {
-			for (int j = 0; j < es.getTerreno().getTerreno()[i].length; j++) {
-				if (es.getTerreno().getTerreno()[i][j] != es.getTerreno().getK()) {
+		for (int i = 0; i < es.getTerreno().length; i++) {
+			for (int j = 0; j < es.getTerreno()[i].length; j++) {
+				if (es.getTerreno()[i][j] != es	.getK()) {
 					verificar = false;
 				}
 			}
 		}
 		return verificar;
 	}
+
 	public Nodo getNodoSolucion() {
 		return nodoSolucion;
 	}
+
 	public void setNodoSolucion(Nodo nodoSolucion) {
 		this.nodoSolucion = nodoSolucion;
 	}

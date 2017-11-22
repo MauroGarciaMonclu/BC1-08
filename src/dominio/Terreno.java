@@ -4,11 +4,11 @@ import java.io.*;
 import java.util.*;
 
 public class Terreno {
-	int Xt;
-	int Yt;
-	int K;
-	int MAX;
-	int[][] terreno;
+	private int Xt;
+	private int Yt;
+	private int K;
+	private int MAX;
+	private int[][] terreno;
 
 	public Terreno(String nombre) {
 		Leer_Terreno(nombre);
