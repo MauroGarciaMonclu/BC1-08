@@ -13,94 +13,67 @@ public class EspacioEstado {
 	public Sucesor[] Generar_Sucesores(Estado es) {
 		Sucesor[] sucesores;
 		int[][] terreno = es.getTerreno();
-		int Xt = es.getTractor()[0];
-		int Yt = es.getTractor()[1];
+		int Xt = es.getXt();
+		int Yt = es.getYt();
 		int K = es.getK();
-		ArrayList<Integer> coordenadasDesplazamiento = new ArrayList<Integer>();
-		ArrayList<Integer> coordenadasAux = new ArrayList<Integer>();
-		ArrayList<ArrayList<Integer>> desplazamientos = new ArrayList<ArrayList<Integer>>();
-		ArrayList<ArrayList<Integer>> distribucion = new ArrayList<ArrayList<Integer>>();
+		int MAX = es.getMAX();
+		ArrayList<ArrayList<Integer>> posiblesMovimientos = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> posiblesDistribucion = new ArrayList<ArrayList<Integer>>();
 		ArrayList<ArrayList<Integer>> combinaciones = new ArrayList<ArrayList<Integer>>();
-		int total = 0;
 		for (int i = 0; i < terreno.length; i++) {
 			for (int j = 0; j < terreno[i].length; j++) {
 				if (Comprobar_Sucesor(terreno, Xt, Yt, i, j)) {
-					coordenadasDesplazamiento = new ArrayList<Integer>();
-					coordenadasDesplazamiento.add(i);
-					coordenadasDesplazamiento.add(j);
-					desplazamientos.add(coordenadasDesplazamiento);
+					ArrayList<Integer> coordenada = new ArrayList<Integer>();
+					coordenada.add(i);
+					coordenada.add(j);
+					posiblesMovimientos.add(coordenada);
 				}
 			}
 		}
 		if (terreno[Xt][Yt] > K) {
-			for (int i = 0; i < desplazamientos.size(); i++) {
-				coordenadasAux = desplazamientos.get(i);
-				if (terreno[coordenadasAux.get(0)][coordenadasAux.get(1)] < K) {
-					distribucion.add(coordenadasAux);
+			int total=0;
+			int sobrante = terreno[Xt][Yt] - K;
+			for (int i = 0; i < terreno.length; i++) {
+				for (int j = 0; j < terreno[i].length; j++) {
+					if (Comprobar_Sucesor(terreno, Xt, Yt, i, j)&&terreno[i][j]<K) {
+						ArrayList<Integer> coordenada = new ArrayList<Integer>();
+						coordenada.add(i);
+						coordenada.add(j);
+						posiblesDistribucion.add(coordenada);
+					}
 				}
 			}
-			int[] aux = new int[distribucion.size()];
+			int[] aux = new int[posiblesDistribucion.size()];
 			Combinar(terreno[Xt][Yt] - K, 0, aux);
 			for (int i = 0; i < combinacionesAux.size(); i++) {
-				for (int j = 0; j < distribucion.size(); j++) {
-					total += combinacionesAux.get(i).get(j);
+				total=0;
+				for(int j=0; j< combinacionesAux.get(i).size();j++) {
+					total+=combinacionesAux.get(i).get(j);
 				}
-				if (total == terreno[Xt][Yt] - K) {
+				if (total==sobrante) {
 					combinaciones.add(combinacionesAux.get(i));
 				}
-				total = 0;
 			}
-		} else {
-			ArrayList<Integer> noDistribucion = new ArrayList<Integer>();
-			noDistribucion.add(0);
-			distribucion.add(noDistribucion);
-			noDistribucion.add(0);
-			combinaciones.add(noDistribucion);
 		}
-		ArrayList<ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>> resultado = new ArrayList<ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>>();
-		ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>> elemento = new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>();
-		ArrayList<ArrayList<ArrayList<Integer>>> elemento21 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		ArrayList<ArrayList<ArrayList<Integer>>> elemento2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		ArrayList<ArrayList<Integer>> elemento3 = new ArrayList<ArrayList<Integer>>();
-		ArrayList<ArrayList<Integer>> elemento31 = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> elemento4 = new ArrayList<Integer>();
-		for (int i = 0; i < desplazamientos.size(); i++) {
-			elemento31 = new ArrayList<ArrayList<Integer>>();
-			elemento31.add(desplazamientos.get(i));
-			if (combinaciones.size() != 0) {
-				for (int j = 0; j < combinaciones.size(); j++) {
-					elemento = new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>();
-					elemento2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-					elemento21 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-					elemento21.add(elemento31);
-					elemento.add(elemento21);
-					for (int k = 0; k < distribucion.size(); k++) {
-						elemento3 = new ArrayList<ArrayList<Integer>>();
-						elemento4 = new ArrayList<Integer>();
-						elemento4.add(combinaciones.get(j).get(k));
-						elemento3.add(elemento4);
-						elemento3.add(distribucion.get(k));
-						elemento2.add(elemento3);
-					}
-					elemento.add(elemento2);
-					resultado.add(elemento);
+		sucesores = new Sucesor[combinaciones.size()*posiblesMovimientos.size()];
+		int n=0;
+		for (int i = 0; i < posiblesMovimientos.size(); i++) {
+			for(int j=0; j< combinaciones.size();j++) {
+				int[] desplazamiento=new int[2];
+				desplazamiento[0]=posiblesMovimientos.get(i).get(0);
+				desplazamiento[1]=posiblesMovimientos.get(i).get(1);
+				int[][] distribucion=new int[3][combinaciones.get(j).size()];
+				for(int k=0;k<distribucion[0].length;k++) {
+					distribucion[0][k]=combinaciones.get(j).get(k);
+					distribucion[1][k]=posiblesDistribucion.get(k).get(0);
+					distribucion[2][k]=posiblesDistribucion.get(k).get(1);
 				}
-			} else {
-				elemento = new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>();
-				elemento21 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-				elemento21.add(elemento31);
-				elemento.add(elemento21);
-				resultado.add(elemento);
+				Accion ac=new Accion(desplazamiento,distribucion);
+				Estado esAux=new Estado(ac,K, MAX,terreno,Xt,Yt);
+				sucesores[n] = new Sucesor(esAux);
+				n++;
 			}
 		}
-		sucesores = new Sucesor[resultado.size()];
-		for (int i = 0; i < resultado.size(); i++) {
-			Accion ac = new Accion(resultado.get(i));
-			Estado auxEs = new Estado(es.getTer(), ac);
-			//System.out.println("hola");
-			sucesores[i] = new Sucesor(auxEs);
-		}
-		combinacionesAux = new ArrayList<ArrayList<Integer>>();
 		return sucesores;
 	}
 
@@ -131,5 +104,13 @@ public class EspacioEstado {
 			verdad = true;
 		}
 		return verdad;
+	}
+
+	public Estado getEs() {
+		return es;
+	}
+
+	public void setEs(Estado es) {
+		this.es = es;
 	}
 }

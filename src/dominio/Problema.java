@@ -1,7 +1,6 @@
 package dominio;
 
 import java.io.*;
-import java.util.*;
 
 public class Problema {
 	private Estado es;
@@ -14,62 +13,69 @@ public class Problema {
 		nodoSolucion = null;
 	}
 
-	public String busqueda(int prof_Max, int inc_Prof) {
+	public String busqueda(String estrategia,int prof_Max, int inc_Prof)  throws IOException{
 		String solucion = "";
 		int profundidadActual = inc_Prof;
 		boolean esSolucion = false;
 		while (!esSolucion && profundidadActual <= inc_Prof) {
-			solucion = busquedaAcotada("ProfundidadAcotada", profundidadActual);
+			solucion = busquedaAcotada(estrategia, profundidadActual);
 			profundidadActual = profundidadActual + inc_Prof;
 		}
 		return solucion;
 	}
 
-	public String busquedaAcotada(String estrategia, int prof_Max) {
+	public String busquedaAcotada(String estrategia, int prof_Max)  throws IOException{
 		String solucion = "";
 		boolean esSolucion = false;
-		boolean continuar = true;
 		Frontera frontera = new Frontera();
 		frontera.crearFrontera();
 		Nodo nInicial = new Nodo(es);
 		frontera.insertar(nInicial);
 		while (!esSolucion && !frontera.esVacia()) {
 			Nodo nActual = frontera.eliminar();
-			if (esObjetivo(nActual.getEstadoActual()) && continuar) {
+			if (esObjetivo(nActual.getEstadoActual())) {
 				esSolucion = true;
 			} else {
-				if (continuar) {
-					EspacioEstado eeAux = new EspacioEstado(nActual.getEstadoActual());
-					Sucesor[] sucesores = eeAux.Generar_Sucesores(nActual.getEstadoActual());
-					Nodo[] listaNodos = crearListaNodos(sucesores, nActual, estrategia, prof_Max);
-					for (int i = 0; i < sucesores.length; i++) {
-						System.out.println(sucesores[i].getAccion()+" "+sucesores[i].getEstado().getTerreno()[0][1]);
-					}
-					for (int i = 0; i < listaNodos.length; i++) {
-						frontera.insertar(listaNodos[i]);
-					}
-					if (nActual.getDesplazamiento() != null)
-						System.out.println(nActual.getAccionString());
-				} else {
-					continuar = true;
-				}
+				EspacioEstado eeAux= new EspacioEstado(nActual.getEstadoActual());
+				Sucesor[] sucesores = eeAux.Generar_Sucesores(nActual.getEstadoActual());
+				Nodo[] listaNodos = crearListaNodos(sucesores, nActual, estrategia, prof_Max);
+				frontera.insertaLista(listaNodos);
 			}
 			if (esSolucion) {
 				solucion = "";
 				solucion = crearSolucion(nActual);
 				setNodoSolucion(nActual);
-				StringTokenizer str = new StringTokenizer(solucion, "\n");
-				PrintWriter salida = null;
-				try {
-					salida = new PrintWriter(new FileWriter("Solucion.txt"));
-					salida.println(estrategia + ":");
-					while (str.hasMoreTokens()) {
-						salida.println(str.nextToken());
+				boolean comprobar = true;
+				int n = 0;
+				File nomb = new File("Solucion.txt");
+				while (comprobar) {
+					if (n == 0) {
+						nomb = new File("Solucion.txt");
+					} else {
+						nomb = new File("Solucion (" + n + ").txt");
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
+					if (!nomb.exists()) {
+						comprobar = false;
+					}
+					n++;
 				}
-				salida.close();
+				FileWriter fich = new FileWriter(nomb);
+				BufferedWriter bw = new BufferedWriter(fich);
+				PrintWriter pw = null;
+				try {
+					pw = new PrintWriter(fich);
+					pw.print(solucion);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						if (null != fich)
+							fich.close();
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				}
+				bw.close();
 			} else {
 				solucion = "No se ha encontrado solucion";
 			}
@@ -130,7 +136,7 @@ public class Problema {
 		boolean verificar = true;
 		for (int i = 0; i < es.getTerreno().length; i++) {
 			for (int j = 0; j < es.getTerreno()[i].length; j++) {
-				if (es.getTerreno()[i][j] != es	.getK()) {
+				if (es.getTerreno()[i][j] != es.getK()) {
 					verificar = false;
 				}
 			}

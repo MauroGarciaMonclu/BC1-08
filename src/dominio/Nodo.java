@@ -1,10 +1,11 @@
 package dominio;
 
-public class Nodo {
+public class Nodo implements Comparable<Nodo> {
 	private Nodo nodoPadre;
 	private Estado estadoActual;
 	private int[] desplazamiento;
 	private int[][] distribucion;
+	private int prof;
 	private int valor;
 	private int costo;
 
@@ -13,16 +14,17 @@ public class Nodo {
 		this.estadoActual = estadoActual;
 		desplazamiento = null;
 		distribucion = null;
+		prof = 0;
 		valor = 0;
 		costo = 0;
 	}
 
-	public Nodo(Nodo nodoPadre, Estado estadoActual, int[] desplazamiento, int[][] distribucion, int valor) {
+	public Nodo(Nodo nodoPadre, Estado estadoActual, int[] desplazamiento, int[][] distribucion, int costo) {
 		this.nodoPadre = nodoPadre;
 		this.estadoActual = estadoActual;
 		this.desplazamiento = desplazamiento;
 		this.distribucion = distribucion;
-		this.valor = valor;
+		this.costo = costo;
 	}
 
 	public int getCosto() {
@@ -71,6 +73,11 @@ public class Nodo {
 
 	public void setDistribucion(int[][] distribucion) {
 		this.distribucion = distribucion;
+	}
+
+	@Override
+	public int compareTo(Nodo n) {
+		return Integer.compare(valor, n.getValor());
 	}
 
 	public String getAccionString() {

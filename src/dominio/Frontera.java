@@ -2,7 +2,7 @@ package dominio;
 
 import java.util.*;
 
-public class Frontera implements Comparable<Nodo> {
+public class Frontera {
 	private Queue<Nodo> frontera;
 
 	public Frontera() {
@@ -17,13 +17,8 @@ public class Frontera implements Comparable<Nodo> {
 	}
 
 	public void crearFrontera() {
-		Queue<Nodo> vacia = new LinkedList<Nodo>();
+		Queue<Nodo> vacia = new PriorityQueue<Nodo>();
 		setFrontera(vacia);
-	}
-
-	@Override
-	public int compareTo(Nodo n) {
-		return Integer.compare(frontera.peek().getValor(), n.getValor());
 	}
 
 	public void insertar(Nodo nodo) {
@@ -36,5 +31,11 @@ public class Frontera implements Comparable<Nodo> {
 
 	public boolean esVacia() {
 		return frontera.isEmpty();
+	}
+
+	public void insertaLista(Nodo[] ln) {
+		for (int i = 0; i < ln.length; i++) {
+			frontera.add(ln[i]);
+		}
 	}
 }
