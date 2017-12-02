@@ -35,7 +35,7 @@ public class EspacioEstado {
 			int sobrante = terreno[Xt][Yt] - K;
 			for (int i = 0; i < terreno.length; i++) {
 				for (int j = 0; j < terreno[i].length; j++) {
-					if (Comprobar_Sucesor(terreno, Xt, Yt, i, j)&&terreno[i][j]<K) {
+					if (Comprobar_Sucesor(terreno, Xt, Yt, i, j)) {
 						ArrayList<Integer> coordenada = new ArrayList<Integer>();
 						coordenada.add(i);
 						coordenada.add(j);
@@ -47,10 +47,14 @@ public class EspacioEstado {
 			Combinar(terreno[Xt][Yt] - K, 0, aux);
 			for (int i = 0; i < combinacionesAux.size(); i++) {
 				total=0;
+				boolean maximo=true;
 				for(int j=0; j< combinacionesAux.get(i).size();j++) {
 					total+=combinacionesAux.get(i).get(j);
+					if(combinacionesAux.get(i).get(j)+terreno[posiblesDistribucion.get(j).get(0)][posiblesDistribucion.get(j).get(1)]>MAX) {
+						maximo=false;
+					}
 				}
-				if (total==sobrante) {
+				if (total==sobrante&&maximo) {
 					combinaciones.add(combinacionesAux.get(i));
 				}
 			}

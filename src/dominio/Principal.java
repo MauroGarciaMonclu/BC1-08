@@ -21,6 +21,8 @@ public class Principal {
 				System.out.println();
 				System.out.println("Sucesores:");
 				System.out.println();
+				//EspacioEstado ee=new EspacioEstado(esF);
+				//ee.Generar_Sucesores(esF);
 				Problema pF = new Problema(esF);
 				pF.busqueda("Anchura",100000, 1);
 				break;

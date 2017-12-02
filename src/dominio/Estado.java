@@ -20,7 +20,12 @@ public class Estado {
 	public Estado(Accion ac, int K, int MAX, int[][]terreno,int Xt, int Yt) {
 		this.Xt = ac.getDesplazamiento()[0];
 		this.Yt = ac.getDesplazamiento()[1];
-		this.terreno=terreno;
+		this.terreno=new int[terreno.length][terreno[0].length];
+		for(int i=0;i<terreno.length;i++) {
+			for(int j=0;j<terreno[i].length;j++) {
+				this.terreno[i][j]=terreno[i][j];
+			}
+		}
 		int total = 0;
 		for (int i = 0; i < ac.getDistribucion()[0].length; i++) {
 			this.terreno[ac.getDistribucion()[1][i]][ac.getDistribucion()[2][i]] += ac.getDistribucion()[0][i];
@@ -30,12 +35,13 @@ public class Estado {
 		this.ac = ac;
 		this.K = K;
 		this.MAX = MAX;
+		/*System.out.println(ac.toString());
 		for(int j=0;j<this.terreno.length;j++) {
 			for(int k=0;k<this.terreno[j].length;k++) {
 				System.out.print(this.terreno[j][k]+" ");
 			}
 			System.out.println();
-		}
+		}*/
 	}
 
 	public Estado(String nombre) {

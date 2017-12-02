@@ -40,6 +40,12 @@ public class Problema {
 				Sucesor[] sucesores = eeAux.Generar_Sucesores(nActual.getEstadoActual());
 				Nodo[] listaNodos = crearListaNodos(sucesores, nActual, estrategia, prof_Max);
 				frontera.insertaLista(listaNodos);
+				for(int j=0;j<nActual.getEstadoActual().getTerreno().length;j++) {
+					for(int k=0;k<nActual.getEstadoActual().getTerreno().length;k++) {
+						System.out.print(nActual.getEstadoActual().getTerreno()[j][k]+" ");
+					}
+					System.out.println();
+				}
 			}
 			if (esSolucion) {
 				solucion = "";
