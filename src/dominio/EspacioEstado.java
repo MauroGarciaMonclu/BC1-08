@@ -58,6 +58,14 @@ public class EspacioEstado {
 					combinaciones.add(combinacionesAux.get(i));
 				}
 			}
+		}else {
+			ArrayList<Integer> nulo = new ArrayList<Integer>();
+			ArrayList<Integer> nulo2 = new ArrayList<Integer>();
+			nulo.add(0);
+			combinaciones.add(nulo);
+			nulo2.add(0);
+			nulo2.add(0);
+			posiblesDistribucion.add(nulo2);
 		}
 		sucesores = new Sucesor[combinaciones.size()*posiblesMovimientos.size()];
 		int n=0;
@@ -78,6 +86,9 @@ public class EspacioEstado {
 				n++;
 			}
 		}
+		/*for(int i=0; i<sucesores.length;i++) {
+			System.out.println(sucesores[i].getAccion());
+		}*/
 		return sucesores;
 	}
 

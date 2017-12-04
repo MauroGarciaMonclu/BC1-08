@@ -10,8 +10,8 @@ public class Sucesor {
 	public Sucesor(Estado es) {
 		desplazamiento = es.getAc().getDesplazamiento();
 		distribucion = es.getAc().getDistribucion();
-		accion = es.getAc().toString();
 		coste = es.Costo(es.getAc());
+		accion = "["+es.getAc().toString()+", "+coste+"]";
 		this.es = es;
 	}
 

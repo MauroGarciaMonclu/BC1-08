@@ -1,11 +1,13 @@
 package dominio;
 
 import java.io.*;
+import java.util.*;
 
 public class Problema {
 	private Estado es;
 	private EspacioEstado ee;
 	private Nodo nodoSolucion;
+	private ArrayList<Nodo> listaPoda = new ArrayList<Nodo>();
 
 	public Problema(Estado es) {
 		this.es = es;
@@ -13,36 +15,73 @@ public class Problema {
 		nodoSolucion = null;
 	}
 
-	public String busqueda(String estrategia,int prof_Max, int inc_Prof)  throws IOException{
+	public String busqueda(String estrategia, int prof_Max, int inc_Prof) throws IOException {
 		String solucion = "";
 		int profundidadActual = inc_Prof;
 		boolean esSolucion = false;
 		while (!esSolucion && profundidadActual <= inc_Prof) {
-			solucion = busquedaAcotada(estrategia, profundidadActual);
+			solucion = busquedaAcotada(estrategia, prof_Max);
 			profundidadActual = profundidadActual + inc_Prof;
 		}
 		return solucion;
 	}
 
-	public String busquedaAcotada(String estrategia, int prof_Max)  throws IOException{
+	public String busquedaAcotada(String estrategia, int prof_Max) throws IOException {
 		String solucion = "";
 		boolean esSolucion = false;
 		Frontera frontera = new Frontera();
 		frontera.crearFrontera();
 		Nodo nInicial = new Nodo(es);
+		int[] desaux = { -1, -1 };
+		int[][] disaux = { { -1 }, { -1 }, { -1 } };
+		Nodo aux = new Nodo(nInicial, es, desaux, disaux, 0, 0);
+		listaPoda.add(aux);
 		frontera.insertar(nInicial);
-		while (!esSolucion && !frontera.esVacia()) {
-			Nodo nActual = frontera.eliminar();
+		Nodo nActual = nInicial;
+		while (!esSolucion && !frontera.esVacia() && nActual.getProf() <= prof_Max) {
+			nActual = frontera.eliminar();
+			if (listaPoda.size() > 1) {
+				for (int i = 0; i < listaPoda.size(); i++) {
+					if (nActual.getAccionString().equals(listaPoda.get(i).getAccionString())) {
+						if (nActual.getValor() > listaPoda.get(i).getValor()) {
+							nActual = frontera.eliminar();
+						}
+					}
+				}
+			}
 			if (esObjetivo(nActual.getEstadoActual())) {
 				esSolucion = true;
 			} else {
-				EspacioEstado eeAux= new EspacioEstado(nActual.getEstadoActual());
+				EspacioEstado eeAux = new EspacioEstado(nActual.getEstadoActual());
 				Sucesor[] sucesores = eeAux.Generar_Sucesores(nActual.getEstadoActual());
 				Nodo[] listaNodos = crearListaNodos(sucesores, nActual, estrategia, prof_Max);
+				for (int i = 0; i < listaNodos.length; i++) {
+					boolean igual = true;
+					for (int j = 0; j < listaPoda.size(); j++) {
+						if (listaNodos[i].getAccionString().equals(listaPoda.get(j).getAccionString())) {
+							if (listaNodos[i].getValor() < listaPoda.get(j).getValor()) {
+								listaPoda.remove(j);
+							}
+							else {
+								igual = false;
+							}
+						}
+					}
+					if (igual) {
+						listaPoda.add(listaNodos[i]);
+					}
+				}
 				frontera.insertaLista(listaNodos);
-				for(int j=0;j<nActual.getEstadoActual().getTerreno().length;j++) {
-					for(int k=0;k<nActual.getEstadoActual().getTerreno().length;k++) {
-						System.out.print(nActual.getEstadoActual().getTerreno()[j][k]+" ");
+				for (int i = 0; i < nActual.getEstadoActual().getTerreno().length; i++) {
+					for (int k = 0; k < nActual.getEstadoActual().getTerreno()[i].length; k++) {
+						System.out.print(nActual.getEstadoActual().getTerreno()[i][k] + " ");
+
+						/*
+						 * System.out.println(listaNodos[i].getAccionString()+" ");
+						 * System.out.print(listaNodos[i].getEstadoActual().getXt()+" ");
+						 * System.out.print(listaNodos[i].getEstadoActual().getYt()+" ");
+						 * System.out.println();
+						 */
 					}
 					System.out.println();
 				}
@@ -96,14 +135,14 @@ public class Problema {
 			listaNodos = new Nodo[sucesores.length];
 			for (int i = 0; i < sucesores.length; i++) {
 				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-						sucesores[i].getDistribucion(), nodoActual.getValor() + 1);
+						sucesores[i].getDistribucion(), sucesores[i].getCoste(), nodoActual.getValor() + 1);
 			}
 			break;
 		case "ProfundidadSimple":
 			listaNodos = new Nodo[sucesores.length];
 			for (int i = 0; i < sucesores.length; i++) {
 				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-						sucesores[i].getDistribucion(), 1000000 - nodoActual.getValor());
+						sucesores[i].getDistribucion(), sucesores[i].getCoste(), 1000000 - nodoActual.getValor());
 			}
 			break;
 		case "ProfundidadAcotada":
@@ -111,7 +150,7 @@ public class Problema {
 				listaNodos = new Nodo[sucesores.length];
 				for (int i = 0; i < sucesores.length; i++) {
 					listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-							sucesores[i].getDistribucion(), 1000000 - nodoActual.getValor());
+							sucesores[i].getDistribucion(), sucesores[i].getCoste(), 1000000 - nodoActual.getValor());
 				}
 			} else {
 				listaNodos = null;
@@ -121,7 +160,7 @@ public class Problema {
 			listaNodos = new Nodo[sucesores.length];
 			for (int i = 0; i < sucesores.length; i++) {
 				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-						sucesores[i].getDistribucion(), nodoActual.getCosto());
+						sucesores[i].getDistribucion(), sucesores[i].getCoste(), nodoActual.getCosto());
 			}
 			break;
 		}

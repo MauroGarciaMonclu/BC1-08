@@ -19,12 +19,14 @@ public class Nodo implements Comparable<Nodo> {
 		costo = 0;
 	}
 
-	public Nodo(Nodo nodoPadre, Estado estadoActual, int[] desplazamiento, int[][] distribucion, int costo) {
+	public Nodo(Nodo nodoPadre, Estado estadoActual, int[] desplazamiento, int[][] distribucion, int costo, int valor) {
 		this.nodoPadre = nodoPadre;
 		this.estadoActual = estadoActual;
 		this.desplazamiento = desplazamiento;
 		this.distribucion = distribucion;
 		this.costo = costo;
+		prof=nodoPadre.getProf()+1;
+		this.valor=valor;
 	}
 
 	public int getCosto() {
@@ -65,6 +67,14 @@ public class Nodo implements Comparable<Nodo> {
 
 	public void setDesplazamiento(int[] desplazamiento) {
 		this.desplazamiento = desplazamiento;
+	}
+
+	public int getProf() {
+		return prof;
+	}
+
+	public void setProf(int prof) {
+		this.prof = prof;
 	}
 
 	public int[][] getDistribucion() {
