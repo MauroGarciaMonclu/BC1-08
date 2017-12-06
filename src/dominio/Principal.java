@@ -24,7 +24,7 @@ public class Principal {
 				//EspacioEstado ee=new EspacioEstado(esF);
 				//ee.Generar_Sucesores(esF);
 				Problema pF = new Problema(esF);
-				pF.busqueda("Anchura",100000000, 1);
+				pF.busqueda("A*",100000000, 1);
 				break;
 			case 'r':
 				int K, C, F, MAX, Xt, Yt;

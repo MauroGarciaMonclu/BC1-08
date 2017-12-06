@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Problema {
+	
 	private Estado es;
 	private EspacioEstado ee;
 	private Nodo nodoSolucion;
@@ -152,6 +153,7 @@ public class Problema {
 					listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
 							sucesores[i].getDistribucion(), sucesores[i].getCoste(), 1000000 - nodoActual.getValor());
 				}
+				
 			} else {
 				listaNodos = null;
 			}
@@ -163,6 +165,15 @@ public class Problema {
 						sucesores[i].getDistribucion(), sucesores[i].getCoste(), nodoActual.getCosto());
 			}
 			break;
+		case "A*":
+			listaNodos = new Nodo[sucesores.length];
+			for (int i = 0; i < listaNodos.length; i++) {
+				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
+						sucesores[i].getDistribucion(), sucesores[i].getCoste(),
+						nodoActual.getCosto() + 1 + ee.heuristica(sucesores[i].getEstado()));
+			}
+			break;
+
 		}
 		return listaNodos;
 	}

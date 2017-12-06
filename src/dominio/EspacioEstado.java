@@ -128,4 +128,17 @@ public class EspacioEstado {
 	public void setEs(Estado es) {
 		this.es = es;
 	}
+	
+	public int heuristica(Estado es){
+		int Casillas_no_k=0;
+		for(int i=0;i<es.getTerreno().length;i++){
+			for(int j=0;j<es.getTerreno()[i].length;j++){
+				if(es.getTerreno()[i][j] != es.getK()){
+					Casillas_no_k++;
+				}
+			}
+		}
+		
+		return Casillas_no_k;
+	}
 }
