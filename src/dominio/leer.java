@@ -9,8 +9,8 @@ public class leer {
 	private static final Scanner TECLADO = new Scanner(System.in);
 
 	/**
-	 * Define el teclado como estático para que no haya que crear ningún objeto
-	 * de la clase Leer y así poder utilizar sus métodos
+	 * Define el teclado como estático para que no haya que crear ningún objeto de
+	 * la clase Leer y así poder utilizar sus métodos
 	 */
 	public static void p(String s) {
 		System.out.println(s);

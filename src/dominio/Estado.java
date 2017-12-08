@@ -1,13 +1,7 @@
 package dominio;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Random;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Estado {
 	private int[][] terreno;
@@ -17,13 +11,13 @@ public class Estado {
 	private int Yt;
 	private int MAX;
 
-	public Estado(Accion ac, int K, int MAX, int[][]terreno,int Xt, int Yt) {
+	public Estado(Accion ac, int K, int MAX, int[][] terreno, int Xt, int Yt) {
 		this.Xt = ac.getDesplazamiento()[0];
 		this.Yt = ac.getDesplazamiento()[1];
-		this.terreno=new int[terreno.length][terreno[0].length];
-		for(int i=0;i<terreno.length;i++) {
-			for(int j=0;j<terreno[i].length;j++) {
-				this.terreno[i][j]=terreno[i][j];
+		this.terreno = new int[terreno.length][terreno[0].length];
+		for (int i = 0; i < terreno.length; i++) {
+			for (int j = 0; j < terreno[i].length; j++) {
+				this.terreno[i][j] = terreno[i][j];
 			}
 		}
 		int total = 0;
@@ -35,13 +29,6 @@ public class Estado {
 		this.ac = ac;
 		this.K = K;
 		this.MAX = MAX;
-		/*System.out.println(ac.toString());
-		for(int j=0;j<this.terreno.length;j++) {
-			for(int k=0;k<this.terreno[j].length;k++) {
-				System.out.print(this.terreno[j][k]+" ");
-			}
-			System.out.println();
-		}*/
 	}
 
 	public Estado(String nombre) {

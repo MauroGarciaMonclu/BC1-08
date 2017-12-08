@@ -1,14 +1,12 @@
 package dominio;
 
-import java.util.ArrayList;
-
 public class Accion {
 	private int desplazamiento[] = new int[2];;
 	private int distribucion[][];
 
-	public Accion(int[] desplazamiento,int[][] distribucion) {
-		this.desplazamiento=desplazamiento;
-		this.distribucion=distribucion;
+	public Accion(int[] desplazamiento, int[][] distribucion) {
+		this.desplazamiento = desplazamiento;
+		this.distribucion = distribucion;
 	}
 
 	public int[] getDesplazamiento() {

@@ -11,7 +11,7 @@ public class Sucesor {
 		desplazamiento = es.getAc().getDesplazamiento();
 		distribucion = es.getAc().getDistribucion();
 		coste = es.Costo(es.getAc());
-		accion = "["+es.getAc().toString()+", "+coste+"]";
+		accion = "[" + es.getAc().toString() + ", " + coste + "]";
 		this.es = es;
 	}
 

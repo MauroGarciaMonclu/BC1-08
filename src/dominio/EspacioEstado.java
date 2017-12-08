@@ -31,7 +31,7 @@ public class EspacioEstado {
 			}
 		}
 		if (terreno[Xt][Yt] > K) {
-			int total=0;
+			int total = 0;
 			int sobrante = terreno[Xt][Yt] - K;
 			for (int i = 0; i < terreno.length; i++) {
 				for (int j = 0; j < terreno[i].length; j++) {
@@ -46,19 +46,20 @@ public class EspacioEstado {
 			int[] aux = new int[posiblesDistribucion.size()];
 			Combinar(terreno[Xt][Yt] - K, 0, aux);
 			for (int i = 0; i < combinacionesAux.size(); i++) {
-				total=0;
-				boolean maximo=true;
-				for(int j=0; j< combinacionesAux.get(i).size();j++) {
-					total+=combinacionesAux.get(i).get(j);
-					if(combinacionesAux.get(i).get(j)+terreno[posiblesDistribucion.get(j).get(0)][posiblesDistribucion.get(j).get(1)]>MAX) {
-						maximo=false;
+				total = 0;
+				boolean maximo = true;
+				for (int j = 0; j < combinacionesAux.get(i).size(); j++) {
+					total += combinacionesAux.get(i).get(j);
+					if (combinacionesAux.get(i).get(j)
+							+ terreno[posiblesDistribucion.get(j).get(0)][posiblesDistribucion.get(j).get(1)] > MAX) {
+						maximo = false;
 					}
 				}
-				if (total==sobrante&&maximo) {
+				if (total == sobrante && maximo) {
 					combinaciones.add(combinacionesAux.get(i));
 				}
 			}
-		}else {
+		} else {
 			ArrayList<Integer> nulo = new ArrayList<Integer>();
 			ArrayList<Integer> nulo2 = new ArrayList<Integer>();
 			nulo.add(0);
@@ -67,28 +68,25 @@ public class EspacioEstado {
 			nulo2.add(0);
 			posiblesDistribucion.add(nulo2);
 		}
-		sucesores = new Sucesor[combinaciones.size()*posiblesMovimientos.size()];
-		int n=0;
+		sucesores = new Sucesor[combinaciones.size() * posiblesMovimientos.size()];
+		int n = 0;
 		for (int i = 0; i < posiblesMovimientos.size(); i++) {
-			for(int j=0; j< combinaciones.size();j++) {
-				int[] desplazamiento=new int[2];
-				desplazamiento[0]=posiblesMovimientos.get(i).get(0);
-				desplazamiento[1]=posiblesMovimientos.get(i).get(1);
-				int[][] distribucion=new int[3][combinaciones.get(j).size()];
-				for(int k=0;k<distribucion[0].length;k++) {
-					distribucion[0][k]=combinaciones.get(j).get(k);
-					distribucion[1][k]=posiblesDistribucion.get(k).get(0);
-					distribucion[2][k]=posiblesDistribucion.get(k).get(1);
+			for (int j = 0; j < combinaciones.size(); j++) {
+				int[] desplazamiento = new int[2];
+				desplazamiento[0] = posiblesMovimientos.get(i).get(0);
+				desplazamiento[1] = posiblesMovimientos.get(i).get(1);
+				int[][] distribucion = new int[3][combinaciones.get(j).size()];
+				for (int k = 0; k < distribucion[0].length; k++) {
+					distribucion[0][k] = combinaciones.get(j).get(k);
+					distribucion[1][k] = posiblesDistribucion.get(k).get(0);
+					distribucion[2][k] = posiblesDistribucion.get(k).get(1);
 				}
-				Accion ac=new Accion(desplazamiento,distribucion);
-				Estado esAux=new Estado(ac,K, MAX,terreno,Xt,Yt);
+				Accion ac = new Accion(desplazamiento, distribucion);
+				Estado esAux = new Estado(ac, K, MAX, terreno, Xt, Yt);
 				sucesores[n] = new Sucesor(esAux);
 				n++;
 			}
 		}
-		/*for(int i=0; i<sucesores.length;i++) {
-			System.out.println(sucesores[i].getAccion());
-		}*/
 		return sucesores;
 	}
 
@@ -128,17 +126,16 @@ public class EspacioEstado {
 	public void setEs(Estado es) {
 		this.es = es;
 	}
-	
-	public int heuristica(Estado es){
-		int Casillas_no_k=0;
-		for(int i=0;i<es.getTerreno().length;i++){
-			for(int j=0;j<es.getTerreno()[i].length;j++){
-				if(es.getTerreno()[i][j] != es.getK()){
-					Casillas_no_k++;
+
+	public int heuristica(Estado es) {
+		int casillas_no_k = 0;
+		for (int i = 0; i < es.getTerreno().length; i++) {
+			for (int j = 0; j < es.getTerreno()[i].length; j++) {
+				if (es.getTerreno()[i][j] != es.getK()) {
+					casillas_no_k++;
 				}
 			}
 		}
-		
-		return Casillas_no_k;
+		return casillas_no_k;
 	}
 }

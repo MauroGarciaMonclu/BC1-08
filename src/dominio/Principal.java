@@ -1,9 +1,7 @@
 package dominio;
 
-import java.io.*;
-
 public class Principal {
-	public static void main(String[] args) throws IOException, Exception {
+	public static void main(String[] args) throws Exception {
 		boolean programa = true;
 		while (programa) {
 			char forma = Character.toLowerCase(
@@ -17,14 +15,11 @@ public class Principal {
 				}
 				Estado esF = new Estado(nombre);
 				System.out.println("Terreno creado a partir de " + nombre + ".txt:");
-				// terF.Mostrar_Terreno();
 				System.out.println();
 				System.out.println("Sucesores:");
 				System.out.println();
-				//EspacioEstado ee=new EspacioEstado(esF);
-				//ee.Generar_Sucesores(esF);
 				Problema pF = new Problema(esF);
-				pF.busqueda("A*",100000000, 1);
+				pF.busqueda("Anchura", 100000000, 1);
 				break;
 			case 'r':
 				int K, C, F, MAX, Xt, Yt;
@@ -44,9 +39,8 @@ public class Principal {
 				}
 				Estado esR = new Estado(Xt, Yt, K, MAX, C, F, nombre);
 				System.out.println("Terreno generado:");
-				// terR.Mostrar_Terreno();
 				Problema pR = new Problema(esR);
-				pR.busqueda("Anchura",10000000, 5);
+				pR.busqueda("Anchura", 10000000, 5);
 				break;
 			case 's':
 				programa = false;

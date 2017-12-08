@@ -25,8 +25,8 @@ public class Nodo implements Comparable<Nodo> {
 		this.desplazamiento = desplazamiento;
 		this.distribucion = distribucion;
 		this.costo = costo;
-		prof=nodoPadre.getProf()+1;
-		this.valor=valor;
+		prof = nodoPadre.getProf() + 1;
+		this.valor = valor;
 	}
 
 	public int getCosto() {
