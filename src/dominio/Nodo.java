@@ -91,12 +91,13 @@ public class Nodo implements Comparable<Nodo> {
 	}
 
 	public String getAccionString() {
-		String accion = "<<" + Integer.toString(desplazamiento[0]) + ", " + Integer.toString(desplazamiento[1]) + ">,<";
+		String accion = "((" + Integer.toString(desplazamiento[0]) + ", " + Integer.toString(desplazamiento[1])
+				+ "), [";
 		for (int i = 0; i < distribucion[0].length; i++) {
-			accion = accion + "<" + Integer.toString(distribucion[0][i]) + ", <" + Integer.toString(distribucion[1][i])
-					+ ", " + Integer.toString(distribucion[2][i]) + ">>";
+			accion = accion + "(" + Integer.toString(distribucion[0][i]) + ", (" + Integer.toString(distribucion[1][i])
+					+ ", " + Integer.toString(distribucion[2][i]) + "))";
 		}
-		accion += ">>";
+		accion += "], " + costo + ")";
 		return accion;
 	}
 }

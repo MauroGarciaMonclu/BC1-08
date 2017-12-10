@@ -136,6 +136,21 @@ public class Estado {
 		bw.close();
 	}
 
+	public String getEstado() {
+		String estado;
+		estado = String.valueOf(Xt) + " " + String.valueOf(Yt) + " " + String.valueOf(K) + " " + String.valueOf(MAX)
+				+ " " + String.valueOf(terreno.length) + " " + String.valueOf(terreno[0].length) + "\n";
+		for (int i = 0; i < terreno.length; i++) {
+			for (int j = 0; j < terreno[i].length; j++) {
+				estado += " " + String.valueOf(terreno[i][j]);
+			}
+			if (i != terreno.length - 1) {
+				estado += "\n";
+			}
+		}
+		return estado;
+	}
+
 	public int[][] getTerreno() {
 		return terreno;
 	}

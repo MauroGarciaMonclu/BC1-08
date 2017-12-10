@@ -4,16 +4,14 @@ import java.io.*;
 import java.util.*;
 
 public class Problema {
-	
+
 	private Estado es;
 	private EspacioEstado ee;
-	private Nodo nodoSolucion;
 	private ArrayList<Nodo> listaPoda = new ArrayList<Nodo>();
 
 	public Problema(Estado es) {
 		this.es = es;
 		ee = new EspacioEstado(es);
-		nodoSolucion = null;
 	}
 
 	public String busqueda(String estrategia, int prof_Max, int inc_Prof) throws IOException {
@@ -62,8 +60,7 @@ public class Problema {
 						if (listaNodos[i].getAccionString().equals(listaPoda.get(j).getAccionString())) {
 							if (listaNodos[i].getValor() < listaPoda.get(j).getValor()) {
 								listaPoda.remove(j);
-							}
-							else {
+							} else {
 								igual = false;
 							}
 						}
@@ -73,24 +70,16 @@ public class Problema {
 					}
 				}
 				frontera.insertaLista(listaNodos);
-				for (int i = 0; i < nActual.getEstadoActual().getTerreno().length; i++) {
-					for (int k = 0; k < nActual.getEstadoActual().getTerreno()[i].length; k++) {
-						System.out.print(nActual.getEstadoActual().getTerreno()[i][k] + " ");
-
-						/*
-						 * System.out.println(listaNodos[i].getAccionString()+" ");
-						 * System.out.print(listaNodos[i].getEstadoActual().getXt()+" ");
-						 * System.out.print(listaNodos[i].getEstadoActual().getYt()+" ");
-						 * System.out.println();
-						 */
-					}
-					System.out.println();
-				}
+				/*
+				 * for (int i = 0; i < nActual.getEstadoActual().getTerreno().length; i++) { for
+				 * (int k = 0; k < nActual.getEstadoActual().getTerreno()[i].length; k++) {
+				 * System.out.print(nActual.getEstadoActual().getTerreno()[i][k] + " "); }
+				 * System.out.println(); }
+				 */
 			}
 			if (esSolucion) {
 				solucion = "";
-				solucion = crearSolucion(nActual);
-				setNodoSolucion(nActual);
+				solucion = crearSolucion(nActual, 0);
 				boolean comprobar = true;
 				int n = 0;
 				File nomb = new File("Solucion.txt");
@@ -153,7 +142,7 @@ public class Problema {
 					listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
 							sucesores[i].getDistribucion(), sucesores[i].getCoste(), 1000000 - nodoActual.getValor());
 				}
-				
+
 			} else {
 				listaNodos = null;
 			}
@@ -178,12 +167,17 @@ public class Problema {
 		return listaNodos;
 	}
 
-	public String crearSolucion(Nodo nodoSolucion) {
+	public String crearSolucion(Nodo nodoSolucion, int costeAcumulado) {
 		String acciones = "";
 		if (nodoSolucion.getNodoPadre() == null) {
-			acciones = "";
+			acciones += nodoSolucion.getEstadoActual().getEstado() + "\n";
 		} else {
-			acciones += crearSolucion(nodoSolucion.getNodoPadre()) + nodoSolucion.getAccionString() + "\n";
+			acciones += crearSolucion(nodoSolucion.getNodoPadre(), costeAcumulado) + nodoSolucion.getAccionString()
+					+ " " + nodoSolucion.getProf() + " " + nodoSolucion.getValor() + " " + costeAcumulado + "\n"
+					+ nodoSolucion.getEstadoActual().getEstado() + "\n";
+			if (nodoSolucion.getNodoPadre() != null) {
+			costeAcumulado += nodoSolucion.getNodoPadre().getCosto();
+			}
 		}
 		return acciones;
 	}
@@ -198,13 +192,5 @@ public class Problema {
 			}
 		}
 		return verificar;
-	}
-
-	public Nodo getNodoSolucion() {
-		return nodoSolucion;
-	}
-
-	public void setNodoSolucion(Nodo nodoSolucion) {
-		this.nodoSolucion = nodoSolucion;
 	}
 }
