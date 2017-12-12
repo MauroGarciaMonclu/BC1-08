@@ -3,7 +3,7 @@ package dominio;
 import java.util.*;
 
 public class Frontera {
-	private Queue<Nodo> frontera;
+	private Queue<Nodo> frontera = new PriorityQueue<Nodo>();
 
 	public Frontera() {
 	}

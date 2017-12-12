@@ -34,6 +34,7 @@ public class Problema {
 		int[] desaux = { -1, -1 };
 		int[][] disaux = { { -1 }, { -1 }, { -1 } };
 		Nodo aux = new Nodo(nInicial, es, desaux, disaux, 0, 0);
+		listaPoda.clear();
 		listaPoda.add(aux);
 		frontera.insertar(nInicial);
 		Nodo nActual = nInicial;
@@ -70,12 +71,6 @@ public class Problema {
 					}
 				}
 				frontera.insertaLista(listaNodos);
-				/*
-				 * for (int i = 0; i < nActual.getEstadoActual().getTerreno().length; i++) { for
-				 * (int k = 0; k < nActual.getEstadoActual().getTerreno()[i].length; k++) {
-				 * System.out.print(nActual.getEstadoActual().getTerreno()[i][k] + " "); }
-				 * System.out.println(); }
-				 */
 			}
 			if (esSolucion) {
 				solucion = "";
@@ -125,14 +120,16 @@ public class Problema {
 			listaNodos = new Nodo[sucesores.length];
 			for (int i = 0; i < sucesores.length; i++) {
 				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-						sucesores[i].getDistribucion(), sucesores[i].getCoste(), nodoActual.getValor() + 1);
+						sucesores[i].getDistribucion(), sucesores[i].getCoste() + nodoActual.getCosto(),
+						nodoActual.getProf() + 1);
 			}
 			break;
 		case "ProfundidadSimple":
 			listaNodos = new Nodo[sucesores.length];
 			for (int i = 0; i < sucesores.length; i++) {
 				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-						sucesores[i].getDistribucion(), sucesores[i].getCoste(), 1000000 - nodoActual.getValor());
+						sucesores[i].getDistribucion(), sucesores[i].getCoste() + nodoActual.getCosto(),
+						1000000 - nodoActual.getProf());
 			}
 			break;
 		case "ProfundidadAcotada":
@@ -140,7 +137,8 @@ public class Problema {
 				listaNodos = new Nodo[sucesores.length];
 				for (int i = 0; i < sucesores.length; i++) {
 					listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-							sucesores[i].getDistribucion(), sucesores[i].getCoste(), 1000000 - nodoActual.getValor());
+							sucesores[i].getDistribucion(), sucesores[i].getCoste() + nodoActual.getCosto(),
+							profundidad - nodoActual.getValor());
 				}
 
 			} else {
@@ -151,18 +149,18 @@ public class Problema {
 			listaNodos = new Nodo[sucesores.length];
 			for (int i = 0; i < sucesores.length; i++) {
 				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-						sucesores[i].getDistribucion(), sucesores[i].getCoste(), nodoActual.getCosto());
+						sucesores[i].getDistribucion(), sucesores[i].getCoste() + nodoActual.getCosto(),
+						sucesores[i].getCoste() + nodoActual.getCosto());
 			}
 			break;
 		case "A*":
 			listaNodos = new Nodo[sucesores.length];
 			for (int i = 0; i < listaNodos.length; i++) {
 				listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
-						sucesores[i].getDistribucion(), sucesores[i].getCoste(),
-						nodoActual.getCosto() + 1 + ee.heuristica(sucesores[i].getEstado()));
+						sucesores[i].getDistribucion(), sucesores[i].getCoste() + nodoActual.getCosto(),
+						sucesores[i].getCoste() + nodoActual.getCosto() + heuristica(sucesores[i].getEstado()));
 			}
 			break;
-
 		}
 		return listaNodos;
 	}
@@ -173,13 +171,22 @@ public class Problema {
 			acciones += nodoSolucion.getEstadoActual().getEstado() + "\n";
 		} else {
 			acciones += crearSolucion(nodoSolucion.getNodoPadre(), costeAcumulado) + nodoSolucion.getAccionString()
-					+ " " + nodoSolucion.getProf() + " " + nodoSolucion.getValor() + " " + costeAcumulado + "\n"
-					+ nodoSolucion.getEstadoActual().getEstado() + "\n";
-			if (nodoSolucion.getNodoPadre() != null) {
-			costeAcumulado += nodoSolucion.getNodoPadre().getCosto();
-			}
+					+ " " + nodoSolucion.getValor() + " " + nodoSolucion.getProf() + " " + nodoSolucion.getCosto()
+					+ "\n" + nodoSolucion.getEstadoActual().getEstado() + "\n";
 		}
 		return acciones;
+	}
+
+	public int heuristica(Estado es) {
+		int casillas_no_k = 0;
+		for (int i = 0; i < es.getTerreno().length; i++) {
+			for (int j = 0; j < es.getTerreno()[i].length; j++) {
+				if (es.getTerreno()[i][j] != es.getK()) {
+					casillas_no_k++;
+				}
+			}
+		}
+		return casillas_no_k;
 	}
 
 	public boolean esObjetivo(Estado es) {
@@ -192,5 +199,13 @@ public class Problema {
 			}
 		}
 		return verificar;
+	}
+
+	public EspacioEstado getEe() {
+		return ee;
+	}
+
+	public void setEe(EspacioEstado ee) {
+		this.ee = ee;
 	}
 }

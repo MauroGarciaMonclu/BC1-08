@@ -12,8 +12,8 @@ public class Estado {
 	private int MAX;
 
 	public Estado(Accion ac, int K, int MAX, int[][] terreno, int Xt, int Yt) {
-		this.Xt = ac.getDesplazamiento()[0];
-		this.Yt = ac.getDesplazamiento()[1];
+		this.Xt = ac.getDesplazamiento()[1];
+		this.Yt = ac.getDesplazamiento()[0];
 		this.terreno = new int[terreno.length][terreno[0].length];
 		for (int i = 0; i < terreno.length; i++) {
 			for (int j = 0; j < terreno[i].length; j++) {
@@ -22,7 +22,7 @@ public class Estado {
 		}
 		int total = 0;
 		for (int i = 0; i < ac.getDistribucion()[0].length; i++) {
-			this.terreno[ac.getDistribucion()[1][i]][ac.getDistribucion()[2][i]] += ac.getDistribucion()[0][i];
+			this.terreno[ac.getDistribucion()[2][i]][ac.getDistribucion()[1][i]] += ac.getDistribucion()[0][i];
 			total += ac.getDistribucion()[0][i];
 		}
 		this.terreno[Xt][Yt] -= total;
@@ -56,8 +56,8 @@ public class Estado {
 		int C, F;
 		try {
 			Scanner fich = new Scanner(new FileReader(nombre + ".txt"));
-			Xt = fich.nextInt();
 			Yt = fich.nextInt();
+			Xt = fich.nextInt();
 			K = fich.nextInt();
 			MAX = fich.nextInt();
 			C = fich.nextInt();
@@ -113,7 +113,7 @@ public class Estado {
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(fich);
-			pw.print(Xt + " " + Yt + " " + K + " " + MAX + " " + terreno.length + " " + terreno[0].length);
+			pw.print(Yt + " " + Xt + " " + K + " " + MAX + " " + terreno.length + " " + terreno[0].length);
 			pw.println();
 			for (int i = 0; i < terreno.length; i++) {
 				for (int j = 0; j < terreno[i].length; j++) {
@@ -138,7 +138,7 @@ public class Estado {
 
 	public String getEstado() {
 		String estado;
-		estado = String.valueOf(Xt) + " " + String.valueOf(Yt) + " " + String.valueOf(K) + " " + String.valueOf(MAX)
+		estado = String.valueOf(Yt) + " " + String.valueOf(Xt) + " " + String.valueOf(K) + " " + String.valueOf(MAX)
 				+ " " + String.valueOf(terreno.length) + " " + String.valueOf(terreno[0].length) + "\n";
 		for (int i = 0; i < terreno.length; i++) {
 			for (int j = 0; j < terreno[i].length; j++) {

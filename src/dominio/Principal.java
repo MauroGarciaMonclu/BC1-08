@@ -61,7 +61,8 @@ public class Principal {
 					p.busqueda("ProfundidadSimple", 10000000, 1);
 					break;
 				case "Profundidad Acotada":
-					p.busqueda("ProfundidadAcotada", 10000000, 1);
+					int profundidad = leer.entero("Profundidad a la que quiere acotar\t-:- ");
+					p.busqueda("ProfundidadAcotada", profundidad, 1);
 					break;
 				case "Coste Uniforme":
 					p.busqueda("CosteUniforme", 10000000, 1);
@@ -70,9 +71,10 @@ public class Principal {
 					p.busqueda("A*", 10000000, 1);
 					break;
 				case "Todas":
+					int profundidadTodas = leer.entero("Profundidad a la que quiere acotar\t-:- ");
 					p.busqueda("Anchura", 10000000, 1);
 					p.busqueda("ProfundidadSimple", 10000000, 1);
-					p.busqueda("ProfundidadAcotada", 10000000, 1);
+					p.busqueda("ProfundidadAcotada", profundidadTodas, 1);
 					p.busqueda("CosteUniforme", 10000000, 1);
 					p.busqueda("A*", 10000000, 1);
 					break;

@@ -87,7 +87,13 @@ public class Nodo implements Comparable<Nodo> {
 
 	@Override
 	public int compareTo(Nodo n) {
-		return Integer.compare(valor, n.getValor());
+		if (valor < n.getValor()) {
+			return -1;
+		} else if (valor > n.getValor()) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	public String getAccionString() {

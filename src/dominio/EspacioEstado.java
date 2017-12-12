@@ -24,8 +24,8 @@ public class EspacioEstado {
 			for (int j = 0; j < terreno[i].length; j++) {
 				if (Comprobar_Sucesor(terreno, Xt, Yt, i, j)) {
 					ArrayList<Integer> coordenada = new ArrayList<Integer>();
-					coordenada.add(i);
 					coordenada.add(j);
+					coordenada.add(i);
 					posiblesMovimientos.add(coordenada);
 				}
 			}
@@ -37,14 +37,14 @@ public class EspacioEstado {
 				for (int j = 0; j < terreno[i].length; j++) {
 					if (Comprobar_Sucesor(terreno, Xt, Yt, i, j)) {
 						ArrayList<Integer> coordenada = new ArrayList<Integer>();
-						coordenada.add(i);
 						coordenada.add(j);
+						coordenada.add(i);
 						posiblesDistribucion.add(coordenada);
 					}
 				}
 			}
 			int[] aux = new int[posiblesDistribucion.size()];
-			Combinar(terreno[Xt][Yt] - K, 0, aux);
+			Combinar(sobrante, 0, aux);
 			for (int i = 0; i < combinacionesAux.size(); i++) {
 				total = 0;
 				boolean maximo = true;
@@ -125,17 +125,5 @@ public class EspacioEstado {
 
 	public void setEs(Estado es) {
 		this.es = es;
-	}
-
-	public int heuristica(Estado es) {
-		int casillas_no_k = 0;
-		for (int i = 0; i < es.getTerreno().length; i++) {
-			for (int j = 0; j < es.getTerreno()[i].length; j++) {
-				if (es.getTerreno()[i][j] != es.getK()) {
-					casillas_no_k++;
-				}
-			}
-		}
-		return casillas_no_k;
 	}
 }
