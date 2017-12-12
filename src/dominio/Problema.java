@@ -38,7 +38,7 @@ public class Problema {
 		listaPoda.add(aux);
 		frontera.insertar(nInicial);
 		Nodo nActual = nInicial;
-		while (!esSolucion && !frontera.esVacia() && nActual.getProf() <= prof_Max) {
+		while (!esSolucion && !frontera.esVacia()) {
 			nActual = frontera.eliminar();
 			if (listaPoda.size() > 1) {
 				for (int i = 0; i < listaPoda.size(); i++) {
@@ -55,22 +55,24 @@ public class Problema {
 				EspacioEstado eeAux = new EspacioEstado(nActual.getEstadoActual());
 				Sucesor[] sucesores = eeAux.Generar_Sucesores(nActual.getEstadoActual());
 				Nodo[] listaNodos = crearListaNodos(sucesores, nActual, estrategia, prof_Max);
-				for (int i = 0; i < listaNodos.length; i++) {
-					boolean igual = true;
-					for (int j = 0; j < listaPoda.size(); j++) {
-						if (listaNodos[i].getAccionString().equals(listaPoda.get(j).getAccionString())) {
-							if (listaNodos[i].getValor() < listaPoda.get(j).getValor()) {
-								listaPoda.remove(j);
-							} else {
-								igual = false;
+				if (listaNodos != null) {
+					for (int i = 0; i < listaNodos.length; i++) {
+						boolean igual = true;
+						for (int j = 0; j < listaPoda.size(); j++) {
+							if (listaNodos[i].getAccionString().equals(listaPoda.get(j).getAccionString())) {
+								if (listaNodos[i].getValor() < listaPoda.get(j).getValor()) {
+									listaPoda.remove(j);
+								} else {
+									igual = false;
+								}
 							}
 						}
+						if (igual) {
+							listaPoda.add(listaNodos[i]);
+						}
 					}
-					if (igual) {
-						listaPoda.add(listaNodos[i]);
-					}
+					frontera.insertaLista(listaNodos);
 				}
-				frontera.insertaLista(listaNodos);
 			}
 			if (esSolucion) {
 				solucion = "";
@@ -133,12 +135,12 @@ public class Problema {
 			}
 			break;
 		case "ProfundidadAcotada":
-			if (nodoActual.getValor() + 1 <= profundidad) {
+			if (nodoActual.getProf() + 1 <= profundidad) {
 				listaNodos = new Nodo[sucesores.length];
 				for (int i = 0; i < sucesores.length; i++) {
 					listaNodos[i] = new Nodo(nodoActual, sucesores[i].getEstado(), sucesores[i].getDesplazamiento(),
 							sucesores[i].getDistribucion(), sucesores[i].getCoste() + nodoActual.getCosto(),
-							profundidad - nodoActual.getValor());
+							1000000 - nodoActual.getProf());
 				}
 
 			} else {
